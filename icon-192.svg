@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1B5E20"/>
+      <stop offset="100%" stop-color="#2E7D32"/>
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="40" fill="url(#bg)"/>
+  <!-- Recycling arrows -->
+  <g transform="translate(96,88)" fill="none" stroke="#66BB6A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Arrow 1: top-right -->
+    <path d="M0,-46 L16,-30 L8,-30 C28,-18 42,6 36,30" stroke="#A5D6A7"/>
+    <path d="M36,30 L20,14" stroke="#A5D6A7"/>
+    <!-- Arrow 2: bottom-left -->
+    <path d="M36,30 L12,30 C-4,30 -20,14 -36,2" stroke="#C8E6C9"/>
+    <path d="M-36,2 L-36,22" stroke="#C8E6C9"/>
+    <!-- Arrow 3: left-up -->
+    <path d="M-36,2 L-24,-18 C-12,-38 8,-46 0,-46" stroke="#E8F5E9"/>
+    <path d="M0,-46 L-16,-30" stroke="#E8F5E9"/>
+  </g>
+  <!-- Recycling symbol using Unicode approach via text -->
+  <text x="96" y="108" text-anchor="middle" font-size="72" font-family="serif">♻</text>
+  <!-- App name -->
+  <text x="96" y="156" text-anchor="middle" font-size="18" font-weight="700" font-family="sans-serif" fill="#C8E6C9" letter-spacing="3">RECY</text>
+  <text x="96" y="175" text-anchor="middle" font-size="14" font-weight="400" font-family="sans-serif" fill="rgba(255,255,255,0.6)" letter-spacing="2">CLEAN</text>
+</svg>
