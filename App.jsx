@@ -141,7 +141,8 @@ function AuthScreen({onAuth,onProspect}){
       throw new Error("Login failed. Please try again.");
     }
 
-    onAuth(data.user);
+  setError("");
+onAuth(data.user);
   } catch (err) {
     setError(err.message || "Login failed");
   } finally {
