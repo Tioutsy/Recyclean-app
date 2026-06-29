@@ -53,9 +53,6 @@ pool.query(`
 `).catch(e => console.error("push_subscriptions table init error:", e));
 
 const PgSession = connectPgSimple(session);
-
-app.use(express.json({ limit: "5mb" }));
-
 app.use(cors({
   origin: [
     "https://recyclean-app.vercel.app",
@@ -64,6 +61,8 @@ app.use(cors({
   ],
   credentials: true
 }));
+
+app.use(express.json({ limit: "5mb" }));
 
 app.use(session({
   store: new PgSession({ pool, tableName: "session" }),
