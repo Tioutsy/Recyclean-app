@@ -8,7 +8,7 @@
   "build": "vite build",
   "preview": "vite preview",
   "start": "node index.js"
-}
+},
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "connect-pg-simple": "^10.0.0",
