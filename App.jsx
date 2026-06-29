@@ -1051,11 +1051,8 @@ export default function RecycleanApp(){
   setUser(u);
   setTab("scan");
   loadUserData(u).catch(() => {});
-  if (u?.isAdmin) {
-    api("/prospects/count")
-      .then(d => setProspectCount(d.count || 0))
-      .catch(() => {});
-  };
+  if (u?.isAdmin) api("/prospects/count").then(d => setProspectCount(d.count || 0)).catch(() => {});
+};
 
   const refreshProspectCount=()=>{if(user?.isAdmin)api("/prospects/count").then(d=>setProspectCount(d.count||0)).catch(()=>{});};
 
