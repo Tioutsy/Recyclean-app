@@ -4,7 +4,7 @@ import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-import { existsSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import pool from "./db.js";
 import authRoutes from "./routes/auth.js";
 import entriesRoutes from "./routes/entries.js";
@@ -18,6 +18,14 @@ import pushRoutes from "./routes/push.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 
+// Initialize database schema
+try {
+  const schema = readFileSync(join(__dirname, "schema.sql"), "utf8");
+  await pool.query(schema);
+  console.log("Database schema initialized");
+} catch (e) {
+  console.error("Database schema init error:", e);
+}
 // Create prospects table on startup
 pool.query(`
   CREATE TABLE IF NOT EXISTS prospects (
