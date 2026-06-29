@@ -198,7 +198,7 @@ function ProspectForm({onBack,onSuccess}){
     if(!form.zone_id||!form.locality)return setError("Veuillez sélectionner une zone et un quartier.");
     setError("");setLoading(true);
     try{
-      const res=await fetch("/api/prospects",{method:"POST",credentials:"include",headers:{"Content-Type":"application/json"},
+      const res=await fetch(fetch(`${API_URL}/api/prospects`,{method:"POST",credentials:"include",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({...form,locality_covered:localityCovered})});
       const data=await res.json();
       if(!res.ok)throw new Error(data.error||"Erreur");
