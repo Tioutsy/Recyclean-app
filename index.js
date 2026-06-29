@@ -1,4 +1,7 @@
 import express from "express";
+import cors from "cors";
+import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import { fileURLToPath } from "url";
@@ -54,6 +57,14 @@ pool.query(`
 const PgSession = connectPgSimple(session);
 
 app.use(express.json({ limit: "5mb" }));
+
+app.use(cors({
+  origin: [
+    "https://recyclean-qm4vse2co-recyclean1.vercel.app",
+    "https://recyclean-app-git-main-recyclean1.vercel.app"
+  ],
+  credentials: true
+}));
 
 app.use(session({
   store: new PgSession({ pool, tableName: "session" }),
