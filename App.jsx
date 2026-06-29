@@ -371,7 +371,7 @@ Respond ONLY with valid JSON:
   let userContent;
   if(scan.type==="photo"){userContent=[{type:"image_url",image_url:{url:scan.value,detail:"low"}},{type:"text",text:"Is this recyclable? Which category?"}];}
   else{userContent=[{type:"text",text:`Barcode: ${scan.value}. What product is this likely to be? Is it recyclable?`}];}
-  const res=await fetch("/api/classify",{method:"POST",credentials:"include",headers:{"Content-Type":"application/json"},
+  const res=await fetch(fetch(`${API_URL}/api/classify`,{method:"POST",credentials:"include",headers:{"Content-Type":"application/json"},
     body:JSON.stringify({model:"gpt-4o",messages:[{role:"system",content:systemPrompt},{role:"user",content:userContent}],max_tokens:300})});
   if(!res.ok)throw new Error("AI request failed");
   const data=await res.json();
