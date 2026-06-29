@@ -142,9 +142,11 @@ function AuthScreen({onAuth,onProspect}){
     }
 
   setError("");
-onAuth(data.user);
+  setError("");
+  setLoading(false);
+  onAuth(data.user);
   } catch (err) {
-    setError(err.message || "Login failed");
+    setError(err.message || "Login failed. Please try again.");
   } finally {
     setLoading(false);
   }
