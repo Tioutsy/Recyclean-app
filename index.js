@@ -2,8 +2,6 @@ import express from "express";
 import cors from "cors";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
-import session from "express-session";
-import connectPgSimple from "connect-pg-simple";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { existsSync } from "fs";
@@ -60,6 +58,7 @@ app.use(express.json({ limit: "5mb" }));
 
 app.use(cors({
   origin: [
+    "https://recyclean-app.vercel.app",
     "https://recyclean-qm4vse2co-recyclean1.vercel.app",
     "https://recyclean-app-git-main-recyclean1.vercel.app"
   ],
