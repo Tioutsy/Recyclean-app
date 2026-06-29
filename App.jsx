@@ -1047,7 +1047,16 @@ export default function RecycleanApp(){
     setMissedDates(miss||[]);
   };
 
-  const handleAuth=async(u)=>{setUser(u);await loadUserData(u);if(u?.isAdmin)api("/prospects/count").then(d=>setProspectCount(d.count||0)).catch(()=>{});};
+  const handleAuth = (u) => {
+  setUser(u);
+  setTab("scan");
+  loadUserData(u).catch(() => {});
+  if (u?.isAdmin) {
+    api("/prospects/count")
+      .then(d => setProspectCount(d.count || 0))
+      .catch(() => {});
+  };
+
   const refreshProspectCount=()=>{if(user?.isAdmin)api("/prospects/count").then(d=>setProspectCount(d.count||0)).catch(()=>{});};
 
   const handleLogout=async()=>{
