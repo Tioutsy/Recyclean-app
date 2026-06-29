@@ -44,7 +44,13 @@ app.use(session({
   secret: process.env.SESSION_SECRET || "fallback-secret-change-me",
   resave: false,
   saveUninitialized: false,
-  sameSite: "lax",
+  proxy: true,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  },
 }));
 
 app.use("/api/auth", authRoutes);
