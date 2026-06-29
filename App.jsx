@@ -137,16 +137,21 @@ function AuthScreen({onAuth,onProspect}){
       body
     });
 
-    if (!data || !data.user) {
-      throw new Error("Login failed. Please try again.");
-    }
+  console.log("AUTH RESPONSE:", data);
 
-  setError("");
-  setError("");
+setError("");
+
+if (data?.user) {
   setLoading(false);
   onAuth(data.user);
-  } catch (err) {
-    setError(err.message || "Login failed. Please try again.");
+  return;
+}
+
+setError("Login failed. Please try again.");
+} catch (err) {
+  console.error("AUTH ERROR:", err);
+  setError(err.message || "Login failed. Please try again.");
+}
   } finally {
     setLoading(false);
   }
