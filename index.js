@@ -26,39 +26,6 @@ try {
 } catch (e) {
   console.error("Database schema init error:", e);
 }
-// Create prospects table on startup
-pool.query(`
-  CREATE TABLE IF NOT EXISTS prospects (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    phone TEXT NOT NULL,
-    address TEXT NOT NULL,
-    zone_id TEXT NOT NULL,
-    locality TEXT DEFAULT '',
-    locality_covered BOOLEAN DEFAULT TRUE,
-    message TEXT DEFAULT '',
-    status TEXT DEFAULT 'pending',
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ
-  )
-`).catch(e => console.error("prospects table init error:", e));
-
-// Add locality columns to existing tables (safe no-op on new tables)
-pool.query(`ALTER TABLE prospects ADD COLUMN IF NOT EXISTS locality TEXT DEFAULT ''`).catch(()=>{});
-pool.query(`ALTER TABLE prospects ADD COLUMN IF NOT EXISTS locality_covered BOOLEAN DEFAULT TRUE`).catch(()=>{});
-
-// Push subscriptions table
-pool.query(`
-  CREATE TABLE IF NOT EXISTS push_subscriptions (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    endpoint TEXT NOT NULL,
-    subscription JSONB NOT NULL,
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    UNIQUE(user_id, endpoint)
-  )
-`).catch(e => console.error("push_subscriptions table init error:", e));
 
 const PgSession = connectPgSimple(session);
 app.use(cors({
