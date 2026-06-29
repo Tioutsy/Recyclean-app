@@ -31,6 +31,8 @@ const PgSession = connectPgSimple(session);
 app.use(cors({
   origin: [
     "https://recyclean-app.vercel.app",
+    "https://www.recyclean.life",
+    "https://recyclean.life",
     "https://recyclean-qm4vse2co-recyclean1.vercel.app",
     "https://recyclean-app-git-main-recyclean1.vercel.app"
   ],
