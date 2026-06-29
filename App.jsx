@@ -122,15 +122,32 @@ function AuthScreen({onAuth,onProspect}){
   const [error,setError]=useState("");
   const [loading,setLoading]=useState(false);
 
-  const submit=async(e)=>{
-    e.preventDefault(); setError(""); setLoading(true);
-    try{
-      const body=mode==="login"?{email,password}:{email,password,name,zone};
-      const data=await api(`/auth/${mode}`,{method:"POST",body});
-      onAuth(data.user);
-    }catch(err){setError(err.message);}
-    finally{setLoading(false);}
-  };
+  const submit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setLoading(true);
+
+  try {
+    const body = mode === "login"
+      ? { email, password }
+      : { email, password, name, zone };
+
+    const data = await api(`/auth/${mode}`, {
+      method: "POST",
+      body
+    });
+
+    if (!data || !data.user) {
+      throw new Error("Login failed. Please try again.");
+    }
+
+    onAuth(data.user);
+  } catch (err) {
+    setError(err.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return(
     <div style={{minHeight:"100vh",background:`linear-gradient(160deg,${BRAND.darkGreen},${BRAND.midGreen})`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:20}}>
