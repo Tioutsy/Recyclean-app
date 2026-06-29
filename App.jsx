@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { useState, useRef, useEffect, useCallback } from "react";
 
 const BRAND = {
@@ -1208,6 +1209,7 @@ export default function RecycleanApp(){
       {guideOpen&&<GuideModal cat={guideOpen} onClose={()=>setGuideOpen(null)}/>}
       {scheduleOpen&&<RegionSetupModal current={schedule} onSave={handleSaveSchedule} onClose={()=>setScheduleOpen(false)}/>}
       {holidayOpen&&schedule&&<HolidayModal schedule={schedule} overrides={overrides} onSave={o=>setOverrides(o)} onClose={()=>setHolidayOpen(false)}/>}
+      <Analytics />
     </>
   );
 }
