@@ -1121,7 +1121,10 @@ export default function RecycleanApp(){
 
   const handleReportMissed=async(date,result)=>{
     if(result==="missed"){
-      await api("/missed",{method:"POST",body:{date,zone:schedule?.regionId||schedule?.region_id||""}});
+      await api("/missed", {
+  method: "POST",
+  body: { date, zone: schedule?.regionId || schedule?.region_id || "" }
+});
       setMissedDates(p=>[...p.filter(d=>d!==date),date]);
     }
   };
