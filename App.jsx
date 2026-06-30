@@ -1055,22 +1055,6 @@ export default function RecycleanApp(){
   const [filterCat,setFilterCat]=useState("all");
   const [tab,setTab]=useState("scan");
   const [guideOpen,setGuideOpen]=useState(null);
-  const loadUserData = async (u) => {
-  if (!u) return;
-  const [ents, sched, miss] = await Promise.all([
-    api("/entries").catch(() => []),
-    api("/schedule").catch(() => null),
-    api("/missed").catch(() => []),
-  ]);
-  setEntries(ents || []);
-  if (sched) setSchedule(sched);
-  setMissedDates(miss || []);
-};
-const handleAuth = (u) => {
-  setUser(u);
-  setTab("scan");
-  loadUserData(u);
-};
   const loadUserData=async(u)=>{
     if(!u)return;
     const [ents,sched,miss]=await Promise.all([
