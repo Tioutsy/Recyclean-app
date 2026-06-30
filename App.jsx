@@ -1062,7 +1062,6 @@ export default function RecycleanApp(){
   const [holidayOpen,setHolidayOpen]=useState(false);
   const [prospectView,setProspectView]=useState(null);
   const [prospectCount,setProspectCount]=useState(0);
-  const [schedule, setSchedule] = useState(null);
   const loadUserData=async(u)=>{
     if(!u)return;
     const [ents,sched,miss]=await Promise.all([
