@@ -1073,7 +1073,21 @@ export default function RecycleanApp(){
     if(sched)setSchedule(sched);
     setMissedDates(miss||[]);
   };
-
+useEffect(() => {
+  api("/auth/me")
+    .then((data) => {
+      if (data?.user) {
+        setUser(data.user);
+        loadUserData(data.user);
+      }
+    })
+    .catch(() => {
+      setUser(null);
+    })
+    .finally(() => {
+      setAuthChecked(true);
+    });
+},
   const handleAuth = (u) => {
   setUser(u);
   setTab("scan");
