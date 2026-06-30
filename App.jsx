@@ -187,7 +187,7 @@ function AuthScreen({onAuth,onProspect}){
       </div>
     </div>
   );
-}
+
 const inputStyle={width:"100%",boxSizing:"border-box",padding:"12px 14px",border:"1px solid #C8E6C9",borderRadius:10,fontFamily:"'DM Sans',sans-serif",fontSize:14,outline:"none",marginBottom:12,background:BRAND.lightBg,color:BRAND.black,display:"block"};
 
 // ── Prospect sign-up form ─────────────────────────────
