@@ -1055,6 +1055,7 @@ export default function RecycleanApp(){
   const [filterCat,setFilterCat]=useState("all");
   const [tab,setTab]=useState("scan");
   const [guideOpen,setGuideOpen]=useState(null);
+  const [schedule, setSchedule] = useState(null);
   const loadUserData=async(u)=>{
     if(!u)return;
     const [ents,sched,miss]=await Promise.all([
