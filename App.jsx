@@ -1047,7 +1047,7 @@ function AdminTab({onCountChange}){
 // ── Root app ─────────────────────────────────────────
 export default function RecycleanApp(){
   const [user,setUser]=useState(null);
-  const [authChecked,setAuthChecked]=useState(false);
+  const [authChecked,setAuthChecked]=useState(true);
   const [entries,setEntries]=useState([]);
   const [mode,setMode]=useState(null);
   const [pendingScan,setPendingScan]=useState(null);
