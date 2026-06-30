@@ -17,8 +17,16 @@ router.post("/signup", async (req, res) => {
     const user = result.rows[0];
     const isAdmin = user.email === (process.env.ADMIN_EMAIL || "").toLowerCase().trim();
     req.session.userId = user.id;
-    req.session.isAdmin = isAdmin;
-    res.json({ user: { ...user, isAdmin } });
+req.session.isAdmin = isAdmin;
+
+req.session.save((err) => {
+  if (err) {
+    console.error("Session save error:", err);
+    return res.status(500).json({ error: "Session error" });
+  }
+
+  res.json({ user: { ...user, isAdmin } });
+});
   } catch (e) {
     if (e.code === "23505") return res.status(409).json({ error: "Email already registered" });
     console.error(e);
