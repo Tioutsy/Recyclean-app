@@ -18,6 +18,8 @@ import pushRoutes from "./routes/push.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 
+app.set("trust proxy", 1);
+
 // Initialize database schema
 try {
   const schema = readFileSync(join(__dirname, "schema.sql"), "utf8");
