@@ -137,26 +137,19 @@ function AuthScreen({onAuth,onProspect}){
       body
     });
 
-    console.log("AUTH RESPONSE:", data);
-
     if (data?.user) {
       setError("");
-      setLoading(false);
       onAuth(data.user);
       return;
     }
 
     setError("Login failed. Please try again.");
   } catch (err) {
-    console.error("AUTH ERROR:", err);
     setError(err.message || "Login failed. Please try again.");
   } finally {
     setLoading(false);
   };
-}
-};
-
-  return(
+    
     <div style={{minHeight:"100vh",background:`linear-gradient(160deg,${BRAND.darkGreen},${BRAND.midGreen})`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:20}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontSize:52,marginBottom:8}}>♻️</div>
