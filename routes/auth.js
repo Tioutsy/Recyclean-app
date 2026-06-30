@@ -37,8 +37,24 @@ router.post("/login", async (req, res) => {
     if (!match) return res.status(401).json({ error: "Invalid email or password" });
     const isAdmin = user.email === (process.env.ADMIN_EMAIL || "").toLowerCase().trim();
     req.session.userId = user.id;
-    req.session.isAdmin = isAdmin;
-    res.json({ user: { id: user.id, email: user.email, name: user.name, zone: user.zone, isAdmin } });
+req.session.isAdmin = isAdmin;
+
+req.session.save((err) => {
+  if (err) {
+    console.error("Session save error:", err);
+    return res.status(500).json({ error: "Session error" });
+  }
+
+  res.json({
+    user: {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      zone: user.zone,
+      isAdmin,
+    },
+  });
+});
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "Server error" });
