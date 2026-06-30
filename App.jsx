@@ -1066,7 +1066,6 @@ export default function RecycleanApp(){
   if (sched) setSchedule(sched);
   setMissedDates(miss || []);
 };
-  },[]);
 const handleAuth = (u) => {
   setUser(u);
   setTab("scan");
