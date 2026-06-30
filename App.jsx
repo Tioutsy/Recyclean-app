@@ -1055,6 +1055,13 @@ export default function RecycleanApp(){
   const [filterCat,setFilterCat]=useState("all");
   const [tab,setTab]=useState("scan");
   const [guideOpen,setGuideOpen]=useState(null);
+  const [schedule,setSchedule]=useState(null);
+  const [overrides,setOverrides]=useState([]);
+  const [missedDates,setMissedDates]=useState([]);
+  const [scheduleOpen,setScheduleOpen]=useState(false);
+  const [holidayOpen,setHolidayOpen]=useState(false);
+  const [prospectView,setProspectView]=useState(null);
+  const [prospectCount,setProspectCount]=useState(0);
   const [schedule, setSchedule] = useState(null);
   const loadUserData=async(u)=>{
     if(!u)return;
