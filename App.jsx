@@ -1055,19 +1055,23 @@ export default function RecycleanApp(){
   const [filterCat,setFilterCat]=useState("all");
   const [tab,setTab]=useState("scan");
   const [guideOpen,setGuideOpen]=useState(null);
-  const [schedule,setSchedule]=useState(null);
-  const [overrides,setOverrides]=useState([]);
-  const [missedDates,setMissedDates]=useState([]);
-  const [scheduleOpen,setScheduleOpen]=useState(false);
-  const [holidayOpen,setHolidayOpen]=useState(false);
-  const [prospectView,setProspectView]=useState(null);
-  const [prospectCount,setProspectCount]=useState(0);
-
-  useEffect(()=>{
-    if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});
-    api("/auth/me").then(d=>{setUser(d.user);return loadUserData(d.user);}).catch(()=>{}).finally(()=>setAuthChecked(true));
+  const loadUserData = async (u) => {
+  if (!u) return;
+  const [ents, sched, miss] = await Promise.all([
+    api("/entries").catch(() => []),
+    api("/schedule").catch(() => null),
+    api("/missed").catch(() => []),
+  ]);
+  setEntries(ents || []);
+  if (sched) setSchedule(sched);
+  setMissedDates(miss || []);
+};
   },[]);
-
+const handleAuth = (u) => {
+  setUser(u);
+  setTab("scan");
+  loadUserData(u);
+};
   const loadUserData=async(u)=>{
     if(!u)return;
     const [ents,sched,miss]=await Promise.all([
