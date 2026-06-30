@@ -1062,18 +1062,9 @@ export default function RecycleanApp(){
   const [holidayOpen,setHolidayOpen]=useState(false);
   const [prospectView,setProspectView]=useState(null);
   const [prospectCount,setProspectCount]=useState(0);
-  const loadUserData=async(u)=>{
-    if(!u)return;
-    const [ents,sched,miss]=await Promise.all([
-      api("/entries").catch(()=>[]),
-      api("/schedule").catch(()=>null),
-      api("/missed").catch(()=>[]),
-    ]);
-    setEntries(ents||[]);
-    if(sched)setSchedule(sched);
-    setMissedDates(miss||[]);
-  };
-  
+    setMissedDates(miss || []);
+};
+
 useEffect(() => {
   api("/auth/me")
     .then((data) => {
@@ -1088,11 +1079,9 @@ useEffect(() => {
     .finally(() => {
       setAuthChecked(true);
     });
-},
-  const handleAuth = (u) => {
-  setUser(u);
-  setTab("scan");
-};
+}, []);
+
+const handleAuth = (u) => {
 
   const refreshProspectCount=()=>{if(user?.isAdmin)api("/prospects/count").then(d=>setProspectCount(d.count||0)).catch(()=>{});};
 
