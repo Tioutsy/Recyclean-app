@@ -107,49 +107,58 @@ function calcImpact(entries){
 // ── API helpers ──────────────────────────────────────
 const API_URL = import.meta.env.VITE_API_URL || "";
 
-async function api(path,opts={}){
-  const res=await fetch(`${API_URL}/api${path}`,{credentials:"include",headers:{"Content-Type":"application/json"},...opts,
-    body:opts.body?JSON.stringify(opts.body):undefined});
+async function api(path, opts = {}) {
+  const res = await fetch(`${API_URL}/api${path}`, {
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    ...opts,
+    body: opts.body ? JSON.stringify(opts.body) : undefined
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Request failed");
+  return data;
 }
 
 // ── Auth screen ──────────────────────────────────────
-function AuthScreen({onAuth,onProspect}){
-  const [mode,setMode]=useState("login");
-  const [email,setEmail]=useState("");
-  const [password,setPassword]=useState("");
-  const [name,setName]=useState("");
-  const [zone,setZone]=useState("");
-  const [error,setError]=useState("");
-  const [loading,setLoading]=useState(false);
+function AuthScreen({ onAuth, onProspect }) {
+  const [mode, setMode] = useState("login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [zone, setZone] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const submit = async (e) => {
-  e.preventDefault();
-  setError("");
-  setLoading(true);
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-  try {
-    const body = mode === "login"
-      ? { email, password }
-      : { email, password, name, zone };
+    try {
+      const body = mode === "login"
+        ? { email, password }
+        : { email, password, name, zone };
 
-    const data = await api(`/auth/${mode}`, {
-      method: "POST",
-      body
-    });
+      const data = await api(`/auth/${mode}`, {
+        method: "POST",
+        body
+      });
 
-    if (data?.user) {
-      setError("");
-      onAuth(data.user);
-      return;
+      if (data?.user) {
+        onAuth(data.user);
+        return;
+      }
+
+      setError("Login failed. Please try again.");
+    } catch (err) {
+      setError(err.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setError("Login failed. Please try again.");
-  } catch (err) {
-    setError(err.message || "Login failed. Please try again.");
-  } finally {
-    setLoading(false);
   };
-    
+
+  return (
     <div style={{minHeight:"100vh",background:`linear-gradient(160deg,${BRAND.darkGreen},${BRAND.midGreen})`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:20}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontSize:52,marginBottom:8}}>♻️</div>
@@ -159,36 +168,47 @@ function AuthScreen({onAuth,onProspect}){
         </div>
         <p style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:"rgba(255,255,255,0.6)",letterSpacing:2,textTransform:"uppercase"}}>AT YOUR DOOR STEP</p>
       </div>
+
       <div style={{background:"#fff",borderRadius:24,padding:"28px 24px",width:"100%",maxWidth:380,boxShadow:"0 20px 60px rgba(0,0,0,0.2)"}}>
         <div style={{display:"flex",background:BRAND.lightBg,borderRadius:10,padding:3,marginBottom:22}}>
           {["login","signup"].map(m=>(
-            <button key={m} onClick={()=>{setMode(m);setError("");}} style={{flex:1,padding:"9px",borderRadius:8,border:"none",background:mode===m?"#fff":"transparent",color:mode===m?BRAND.darkGreen:BRAND.gray,fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:700,cursor:"pointer",boxShadow:mode===m?"0 1px 4px rgba(0,0,0,0.1)":"none",transition:"all 0.15s",textTransform:"capitalize"}}>{m==="login"?"Log In":"Sign Up"}</button>
+            <button key={m} onClick={()=>{setMode(m);setError("");}} style={{flex:1,padding:"9px",borderRadius:8,border:"none",background:mode===m?"#fff":"transparent",color:mode===m?BRAND.darkGreen:BRAND.gray,fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:700,cursor:"pointer",boxShadow:mode===m?"0 1px 4px rgba(0,0,0,0.1)":"none",transition:"all 0.15s",textTransform:"capitalize"}}>
+              {m==="login"?"Log In":"Sign Up"}
+            </button>
           ))}
         </div>
+
         <form onSubmit={submit}>
           {mode==="signup"&&<input placeholder="Your name" value={name} onChange={e=>setName(e.target.value)} style={inputStyle} required/>}
           <input placeholder="Email address" type="email" value={email} onChange={e=>setEmail(e.target.value)} style={inputStyle} required/>
           <input placeholder="Password (min 6 characters)" type="password" value={password} onChange={e=>setPassword(e.target.value)} style={inputStyle} required/>
+
           {mode==="signup"&&(
             <select value={zone} onChange={e=>setZone(e.target.value)} style={inputStyle}>
               <option value="">Select your collection zone (optional)</option>
               {REGIONS.map(r=><option key={r.id} value={r.id}>{r.label}</option>)}
             </select>
           )}
+
           {error&&<p style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:"#C62828",marginBottom:10,textAlign:"center"}}>{error}</p>}
+
           <button type="submit" disabled={loading} style={{width:"100%",padding:"14px",borderRadius:50,border:"none",background:loading?"#C8E6C9":BRAND.darkGreen,color:"#fff",fontFamily:"'DM Sans',sans-serif",fontSize:15,fontWeight:700,cursor:loading?"default":"pointer",transition:"all 0.2s"}}>
             {loading?"Please wait…":mode==="login"?"Log In →":"Create Account →"}
           </button>
         </form>
-        {onProspect&&(<div style={{marginTop:16,paddingTop:14,borderTop:"1px solid #F1F8E9",textAlign:"center"}}>
-          <p style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:BRAND.gray,marginBottom:8}}>Pas encore client Recyclean ?</p>
-          <button onClick={onProspect} style={{width:"100%",padding:"11px",borderRadius:50,border:`1px solid ${BRAND.brightGreen}`,background:BRAND.lightBg,fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:600,color:BRAND.darkGreen,cursor:"pointer"}}>Demander à m'abonner →</button>
-        </div>)}
+
+        {onProspect&&(
+          <div style={{marginTop:16,paddingTop:14,borderTop:"1px solid #F1F8E9",textAlign:"center"}}>
+            <p style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:BRAND.gray,marginBottom:8}}>Pas encore client Recyclean ?</p>
+            <button onClick={onProspect} style={{width:"100%",padding:"11px",borderRadius:50,border:`1px solid ${BRAND.brightGreen}`,background:BRAND.lightBg,fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:600,color:BRAND.darkGreen,cursor:"pointer"}}>
+              Demander à m'abonner →
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
-
-const inputStyle={width:"100%",boxSizing:"border-box",padding:"12px 14px",border:"1px solid #C8E6C9",borderRadius:10,fontFamily:"'DM Sans',sans-serif",fontSize:14,outline:"none",marginBottom:12,background:BRAND.lightBg,color:BRAND.black,display:"block"};
+}
 
 // ── Prospect sign-up form ─────────────────────────────
 function ProspectForm({onBack,onSuccess}){
