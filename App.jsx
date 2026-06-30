@@ -154,9 +154,6 @@ function AuthScreen({onAuth,onProspect}){
     setLoading(false);
   };
 }
-  } finally {
-    setLoading(false);
-  }
 };
 
   return(
