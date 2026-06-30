@@ -1082,8 +1082,12 @@ useEffect(() => {
 }, []);
 
 const handleAuth = (u) => {
+  setUser(u);
+  setTab("scan");
+  loadUserData(u);
+};
 
-  const refreshProspectCount=()=>{if(user?.isAdmin)api("/prospects/count").then(d=>setProspectCount(d.count||0)).catch(()=>{});};
+const refreshProspectCount=()=>{if(user?.isAdmin)api("/prospects/count").then(d=>setProspectCount(d.count||0)).catch(()=>{});};
 
   const handleLogout=async()=>{
     try{await api("/auth/logout",{method:"POST"});}catch{}
